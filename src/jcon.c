@@ -75,3 +75,11 @@ void jcon_double(Jcon_Serializer *s, double val, int precision)
   s->scope = JCON_OBJ;
   s->state = WAITING_FOR_KEY;
 }
+
+void jcon_cstr(Jcon_Serializer *s, const char *cstr)
+{
+  if (s->state != WAITING_FOR_VALUE && s->scope == JCON_OBJ) assert(0 && "Invalid JSON syntax. Expected key.");
+  fprintf(s->f, "\"%s\"", cstr);
+  s->scope = JCON_OBJ;
+  s->state = WAITING_FOR_KEY;
+}

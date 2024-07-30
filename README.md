@@ -8,7 +8,7 @@ Here are the goals of the library as a checklist:
 - [X] Support null type.
 - [X] Support integer types.
 - [X] Support float types.
-- [ ] Support string types.
+- [X] Support string types.
 - [ ] Load `.json` files into the memory.
 - [X] Write `.json` files to the disk.
 
