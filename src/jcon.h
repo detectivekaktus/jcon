@@ -6,9 +6,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#define JCON_WRITE_MODE  0
-#define JCON_READ_MODE   1
-
 typedef enum {
   JCON_OBJ,
   JCON_KEY,
@@ -31,7 +28,7 @@ typedef struct {
 
 #define jcon_indent(f, ind) for (size_t i = 0; i < (ind); i++) fputc(' ', f);
 
-Jcon_Serializer *jcon_begin(const char *filename, uint8_t mode);
+Jcon_Serializer *jcon_begin(const char *filename);
 void jcon_end(Jcon_Serializer *s);
 void jcon_add_key(Jcon_Serializer *s, const char *key);
 void jcon_null(Jcon_Serializer *s);

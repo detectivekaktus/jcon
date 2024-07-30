@@ -1,6 +1,6 @@
 #include "jcon.h"
 
-Jcon_Serializer *jcon_begin(const char *filename, uint8_t mode)
+Jcon_Serializer *jcon_begin(const char *filename)
 {
   Jcon_Serializer *s = malloc(sizeof(Jcon_Serializer));
   s->scope = JCON_OBJ;
@@ -8,18 +8,8 @@ Jcon_Serializer *jcon_begin(const char *filename, uint8_t mode)
   s->size = 0;
   s->arr_size = 0;
   s->indent = 2;
-  switch (mode) {
-    case JCON_WRITE_MODE: {
-      s->f = fopen(filename, "w");
-      fprintf(s->f, "{\n");
-    } break;
-    case JCON_READ_MODE: {
-      assert(0 && "not implemented");
-    } break;
-    default: {
-      assert(0 && "unreachable");
-    } break;
-  }
+  s->f = fopen(filename, "w");
+  fprintf(s->f, "{\n");
   return s;
 }
 
