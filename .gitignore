@@ -1,5 +1,7 @@
 build/
 
+example.json
+
 main.c
 test.c
 main

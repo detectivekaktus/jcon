@@ -7,7 +7,7 @@ Here are the goals of the library as a checklist:
 - [ ] Create an install `.sh` script.
 - [X] Support null type.
 - [X] Support integer types.
-- [ ] Support float types.
+- [X] Support float types.
 - [ ] Support string types.
 - [ ] Load `.json` files into the memory.
 - [X] Write `.json` files to the disk.

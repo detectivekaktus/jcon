@@ -36,5 +36,7 @@ void jcon_end(Jcon_Serializer *s);
 void jcon_add_key(Jcon_Serializer *s, const char *key);
 void jcon_null(Jcon_Serializer *s);
 void jcon_int(Jcon_Serializer *s, int64_t val);
+void jcon_float(Jcon_Serializer *s, float val, int precision);
+void jcon_double(Jcon_Serializer *s, double val, int precision);
 
 #endif
