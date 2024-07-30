@@ -11,6 +11,11 @@ static: $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c src/jcon.c -o $(BUILD_DIR)/jcon.o
 	ar rcs $(BUILD_DIR)/libjcon.a $(BUILD_DIR)/jcon.o
 
+test: $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c src/jcon.c -o $(BUILD_DIR)/jcon.o
+	$(CC) $(CFLAGS) -c test.c -o $(BUILD_DIR)/test.o
+	$(CC) $(CFLAGS) -o test $(BUILD_DIR)/jcon.o $(BUILD_DIR)/test.o
+
 $(BUILD_DIR):
 	mkdir $@
 

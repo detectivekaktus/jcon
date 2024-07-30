@@ -5,12 +5,12 @@ jcon is a JSON serializer library that allows you to load JSON objects from `.js
 
 Here are the goals of the library as a checklist:
 - [ ] Create an install `.sh` script.
-- [ ] Support null type.
+- [X] Support null type.
 - [ ] Support integer types.
 - [ ] Support float types.
 - [ ] Support string types.
 - [ ] Load `.json` files into the memory.
-- [ ] Write `.json` files to the disk.
+- [X] Write `.json` files to the disk.
 
 ## Compilation
 The library is available in two different versions: static and dynamic.
