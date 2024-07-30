@@ -35,5 +35,6 @@ Jcon_Serializer *jcon_begin(const char *filename, uint8_t mode);
 void jcon_end(Jcon_Serializer *s);
 void jcon_add_key(Jcon_Serializer *s, const char *key);
 void jcon_null(Jcon_Serializer *s);
+void jcon_int(Jcon_Serializer *s, int64_t val);
 
 #endif
