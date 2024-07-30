@@ -7,8 +7,7 @@
 #include <stdint.h>
 
 #define JCON_WRITE_MODE  0
-#define JCON_APPEND_MODE 1
-#define JCON_READ_MODE   2
+#define JCON_READ_MODE   1
 
 typedef enum {
   JCON_OBJ,
@@ -26,6 +25,7 @@ typedef struct {
   Jcon_Scope scope;
   Jcon_State state;
   size_t size;
+  size_t arr_size;
   size_t indent;
 } Jcon_Serializer;
 
@@ -39,5 +39,7 @@ void jcon_int(Jcon_Serializer *s, int64_t val);
 void jcon_float(Jcon_Serializer *s, float val, int precision);
 void jcon_double(Jcon_Serializer *s, double val, int precision);
 void jcon_cstr(Jcon_Serializer *s, const char *cstr);
+void jcon_arr_begin(Jcon_Serializer *s);
+void jcon_arr_end(Jcon_Serializer *s);
 
 #endif
