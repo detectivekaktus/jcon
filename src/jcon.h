@@ -2,16 +2,23 @@
 #define JCON_IMPLEMENTATION
 
 #include <assert.h>
+#include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
-#include <stdbool.h>
+#include "../include/c-extended.h"
 
 typedef enum {
   JCON_OBJ,
   JCON_KEY,
   JCON_ARR
 } Jcon_Scope;
+
+typedef struct {
+  Jcon_Scope *items;
+  size_t size;
+  size_t capacity;
+} Scopes;
 
 typedef enum {
   WAITING_FOR_KEY,
@@ -20,7 +27,7 @@ typedef enum {
 
 typedef struct {
   FILE *f;
-  Jcon_Scope scope;
+  Scopes *scopes;
   Jcon_State state;
   size_t size;
   size_t arr_size;
