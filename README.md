@@ -7,6 +7,7 @@ Here are the goals of the library as a checklist:
 - [X] Support integer types.
 - [X] Support float types.
 - [X] Support string types.
+- [X] Support boolean types.
 - [X] Support array types.
 - [ ] Deserialize `.json` files into the memory.
 - [X] Serialize `.json` files to the disk.

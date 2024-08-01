@@ -56,6 +56,18 @@ void jcon_int(Jcon_Serializer *s, int64_t val)
   s->state = WAITING_FOR_KEY;
 }
 
+void jcon_bool(Jcon_Serializer *s, bool val)
+{
+  if (s->state != WAITING_FOR_VALUE && s->scope == JCON_OBJ) assert(0 && "Invalid JSON syntax. Expected key.");
+  if (s->scope == JCON_ARR) {
+    if (s->arr_size++ > 0) fprintf(s->f, ",\n");
+    jcon_indent(s->f, s->indent);
+  }
+  fprintf(s->f, "%s", val ? "true" : "false");
+  s->scope = s->scope == JCON_ARR ? JCON_ARR : JCON_OBJ;
+  s->state = WAITING_FOR_KEY;
+}
+
 void jcon_float(Jcon_Serializer *s, float val, int precision)
 {
   if (s->state != WAITING_FOR_VALUE && s->scope == JCON_OBJ) assert(0 && "Invalid JSON syntax. Expected key.");
