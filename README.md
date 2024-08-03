@@ -3,7 +3,7 @@ jcon is a JSON serializer library that allows you to write the changes of your o
 The project is not maintained anymore. If you want to continue working on it (e.g. add deserialization), please consider forking the repository.
 
 Here are the goals of the library as a checklist:
-- [ ] Create an install `.sh` script.
+- [X] Create an install `.sh` script.
 - [X] Support null type.
 - [X] Support integer types.
 - [X] Support float types.
@@ -85,6 +85,10 @@ make
 ```console
 make static
 ```
+
+To install the library, run the `install.sh` script with the root privilege.
+
+If `ldd` shows that the reference to the library is not found, you need to update your `LD_LIBRARY_PATH` environment variable.
 
 ## Contrubution
 To help the project, you can contribute to it after reading the [CONTRIBUTING.md](https://github.com/detectivekaktus/jcon/blob/main/CONTRIBUTING.md) file in the root directory of the repository.
