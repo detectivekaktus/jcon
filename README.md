@@ -47,7 +47,8 @@ int main(void)
     jcon_obj_end(s);
   jcon_end(s);
   return 0;
-}```
+}
+```
 
 ```json
 {
