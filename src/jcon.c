@@ -20,7 +20,7 @@ Jcon_Serializer *jcon_begin(const char *filename)
 void jcon_end(Jcon_Serializer *s)
 {
   fprintf(s->f, "\n}\n");
-  da_free(s->scopes);
+  da_heap_free(s->scopes);
   fclose(s->f);
   free(s);
   s = NULL;

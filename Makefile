@@ -5,7 +5,7 @@ CFLAGS = -Wall -Wextra -pedantic -ggdb -std=c99 -fsanitize=undefined
 
 all: $(BUILD_DIR)
 	$(CC) $(CFLAGS) -fpic -c src/jcon.c -o $(BUILD_DIR)/jcon.o
-	$(CC) $(CFLAGS) -shared $(BUILD_DIR)/jcon.o -o $(BUILD_DIR)/libjcon.so
+	$(CC) $(CFLAGS) -shared $(BUILD_DIR)/jcon.o -o $(BUILD_DIR)/libjcon.so.1.0.0
 
 static: $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c src/jcon.c -o $(BUILD_DIR)/jcon.o

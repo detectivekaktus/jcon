@@ -48,6 +48,8 @@ The library is available in two different versions: static and dynamic.
 
 To compile the library from source, you need to have *GNU Make* tool installed on your computer, as well as a C compiler that supports C99 standard.
 
+The project relies on my own header-only library `c-extended`. You don't need to install anything.
+
 **Dynamic library**
 ```console
 make
