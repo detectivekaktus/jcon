@@ -1,5 +1,6 @@
 # jcon
-jcon is a JSON serializer library that allows you to load JSON objects from `.json` files and write the changes of your own to `.json` files.
+jcon is a JSON serializer library that allows you to write the changes of your own to `.json` files.
+The project is not maintained anymore. If you want to continue working on it (e.g. add deserialization), please consider forking the repository.
 
 Here are the goals of the library as a checklist:
 - [ ] Create an install `.sh` script.
@@ -9,37 +10,61 @@ Here are the goals of the library as a checklist:
 - [X] Support string types.
 - [X] Support boolean types.
 - [X] Support array types.
+- [X] Support object types.
 - [ ] Deserialize `.json` files into the memory.
 - [X] Serialize `.json` files to the disk.
 
 ## Examples
 ### Serialization
 ```c
-#include <jcon.h>
+#include "src/jcon.h"
 
-int main(void) {
-    Jcon_Serializer *s = jcon_begin("example.json");
-        jcon_add_key(s, "null");
-        jcon_null(s);
-        jcon_add_key(s, "hello");
-        jcon_cstr(s, "world");
-        jcon_add_key(s, "array");
-        jcon_arr_begin(s);
-            jcon_int(s, 69);
-            jcon_int(s, 420);
-        jcon_arr_end(s);
-    jcon_end(s);
-}
-```
+int main(void)
+{
+  Jcon_Serializer *s = jcon_begin("example.json");
+    jcon_add_key(s, "null");
+    jcon_null(s);
+    jcon_add_key(s, "boolean");
+    jcon_bool(s, true);
+    jcon_add_key(s, "integer");
+    jcon_int(s, 69);
+    jcon_add_key(s, "float");
+    jcon_float(s, 3.14f, 2);
+    jcon_add_key(s, "string");
+    jcon_cstr(s, "hello world");
+    jcon_add_key(s, "array");
+    jcon_arr_begin(s);
+      jcon_int(s, 69);
+      jcon_int(s, 420);
+      jcon_int(s, 69420);
+    jcon_arr_end(s);
+    jcon_add_key(s, "object");
+    jcon_obj_begin(s);
+      jcon_add_key(s, "inner-double");
+      jcon_double(s, 3.1415, 4);
+      jcon_add_key(s, "greeting");
+      jcon_cstr(s, "hi, i'm binary");
+    jcon_obj_end(s);
+  jcon_end(s);
+  return 0;
+}```
 
 ```json
 {
-    "null": null,
-    "hello": "world",
-    "array": [
-        69,
-        420
-    ]
+  "null": null,
+  "boolean": true,
+  "integer": 69,
+  "float": 3.14,
+  "string": "hello world",
+  "array": [
+    69,
+    420,
+    69420
+  ],
+  "object": {
+    "inner-double": 3.1415,
+    "greeting": "hi, i'm binary"
+  }
 }
 ```
 

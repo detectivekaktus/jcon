@@ -9,8 +9,8 @@ Jcon_Serializer *jcon_begin(const char *filename)
   if (s->scopes == NULL) CRASH("buy more ram, lol");
   da_append(s->scopes, JCON_OBJ);
   s->state = WAITING_FOR_KEY;
-  s->size = 0;
-  s->arr_size = 0;
+  s->has_values = false;
+  s->has_arr_values = false;
   s->indent = 2;
   s->f = fopen(filename, "w");
   fprintf(s->f, "{\n");
@@ -31,7 +31,8 @@ void jcon_add_key(Jcon_Serializer *s, const char *key)
 {
   if (s->state != WAITING_FOR_KEY && s->scopes->items[s->scopes->size - 1] != JCON_OBJ)
     assert(0 && "Invalid JSON syntax. Expected value.");
-  if (s->size++ > 0) fprintf(s->f, ",\n");
+  if (s->has_values) fprintf(s->f, ",\n");
+  else s->has_values = true;
   jcon_indent(s->f, s->indent);
   fprintf(s->f, "\"%s\": ", key);
   da_append(s->scopes, JCON_KEY);
@@ -43,7 +44,8 @@ void jcon_null(Jcon_Serializer *s)
   if (s->state != WAITING_FOR_VALUE && s->scopes->items[s->scopes->size - 1] == JCON_OBJ)
     assert(0 && "Invalid JSON syntax. Expected key.");
   if (s->scopes->items[s->scopes->size - 1] == JCON_ARR) {
-    if (s->arr_size++ > 0) fprintf(s->f, ",\n");
+    if (s->has_arr_values) fprintf(s->f, ",\n");
+    else s->has_arr_values = true;
     jcon_indent(s->f, s->indent);
   }
   else s->scopes->size--;
@@ -56,7 +58,8 @@ void jcon_int(Jcon_Serializer *s, int64_t val)
   if (s->state != WAITING_FOR_VALUE && s->scopes->items[s->scopes->size - 1] == JCON_OBJ)
     assert(0 && "Invalid JSON syntax. Expected key.");
   if (s->scopes->items[s->scopes->size - 1] == JCON_ARR) {
-    if (s->arr_size++ > 0) fprintf(s->f, ",\n");
+    if (s->has_arr_values) fprintf(s->f, ",\n");
+    else s->has_arr_values = true;
     jcon_indent(s->f, s->indent);
   }
   else s->scopes->size--;
@@ -69,7 +72,8 @@ void jcon_bool(Jcon_Serializer *s, bool val)
   if (s->state != WAITING_FOR_VALUE && s->scopes->items[s->scopes->size - 1] == JCON_OBJ)
     assert(0 && "Invalid JSON syntax. Expected key.");
   if (s->scopes->items[s->scopes->size - 1] == JCON_ARR) {
-    if (s->arr_size++ > 0) fprintf(s->f, ",\n");
+    if (s->has_arr_values) fprintf(s->f, ",\n");
+    else s->has_arr_values = true;
     jcon_indent(s->f, s->indent);
   }
   else s->scopes->size--;
@@ -82,7 +86,8 @@ void jcon_float(Jcon_Serializer *s, float val, int precision)
   if (s->state != WAITING_FOR_VALUE && s->scopes->items[s->scopes->size - 1] == JCON_OBJ)
     assert(0 && "Invalid JSON syntax. Expected key.");
   if (s->scopes->items[s->scopes->size - 1] == JCON_ARR) {
-    if (s->arr_size++ > 0) fprintf(s->f, ",\n");
+    if (s->has_arr_values) fprintf(s->f, ",\n");
+    else s->has_arr_values = true;
     jcon_indent(s->f, s->indent);
   }
   else s->scopes->size--;
@@ -95,7 +100,8 @@ void jcon_double(Jcon_Serializer *s, double val, int precision)
   if (s->state != WAITING_FOR_VALUE && s->scopes->items[s->scopes->size - 1] == JCON_OBJ)
     assert(0 && "Invalid JSON syntax. Expected key.");
   if (s->scopes->items[s->scopes->size - 1] == JCON_ARR) {
-    if (s->arr_size++ > 0) fprintf(s->f, ",\n");
+    if (s->has_arr_values) fprintf(s->f, ",\n");
+    else s->has_arr_values = true;
     jcon_indent(s->f, s->indent);
   }
   else s->scopes->size--;
@@ -108,7 +114,8 @@ void jcon_cstr(Jcon_Serializer *s, const char *cstr)
   if (s->state != WAITING_FOR_VALUE && s->scopes->items[s->scopes->size - 1] == JCON_OBJ)
     assert(0 && "Invalid JSON syntax. Expected key.");
   if (s->scopes->items[s->scopes->size - 1] == JCON_ARR) {
-    if (s->arr_size++ > 0) fprintf(s->f, ",\n");
+    if (s->has_arr_values) fprintf(s->f, ",\n");
+    else s->has_arr_values = true;
     jcon_indent(s->f, s->indent);
   }
   else s->scopes->size--;
@@ -121,14 +128,15 @@ void jcon_arr_begin(Jcon_Serializer *s)
   if (s->state != WAITING_FOR_VALUE && s->scopes->items[s->scopes->size - 1] == JCON_OBJ)
     assert(0 && "Invalid JSON syntax. Expected key.");
   if (s->scopes->items[s->scopes->size - 1] == JCON_ARR) {
-    if (s->arr_size++ > 0) fprintf(s->f, ",\n");
+    if (s->has_arr_values) fprintf(s->f, ",\n");
+    else s->has_arr_values = true;
     jcon_indent(s->f, s->indent);
   }
   fprintf(s->f, "[\n");
   da_append(s->scopes, JCON_ARR);
   s->indent += 2;
   s->state = WAITING_FOR_VALUE;
-  s->arr_size = 0;
+  s->has_arr_values = false;
 }
 
 void jcon_arr_end(Jcon_Serializer *s)
@@ -141,4 +149,33 @@ void jcon_arr_end(Jcon_Serializer *s)
   fprintf(s->f, "]");
   s->scopes->size--;
   s->state = WAITING_FOR_KEY;
+}
+
+void jcon_obj_begin(Jcon_Serializer *s)
+{
+  if (s->state != WAITING_FOR_VALUE)
+    assert(0 && "Invalid JSON syntax. Expected a key.");
+  if (s->scopes->items[s->scopes->size - 1] == JCON_ARR) {
+    if (s->has_arr_values) fprintf(s->f, ",\n");
+    else s->has_arr_values = true;
+    jcon_indent(s->f, s->indent);
+  }
+  fprintf(s->f, "{\n");
+  da_append(s->scopes, JCON_OBJ);
+  s->indent += 2;
+  s->state = WAITING_FOR_KEY;
+  s->has_values = false;
+}
+
+void jcon_obj_end(Jcon_Serializer *s)
+{
+  if (s->state != WAITING_FOR_KEY && s->scopes->items[s->scopes->size - 1] != JCON_OBJ)
+    assert(0 && "Invalid JSON syntax. Can't end an array.");
+  fprintf(s->f, "\n");
+  s->indent -= 2;
+  jcon_indent(s->f, s->indent);
+  fprintf(s->f, "}");
+  s->scopes->size--;
+  s->state = WAITING_FOR_KEY;
+  s->has_values = true;
 }

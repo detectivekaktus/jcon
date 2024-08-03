@@ -29,8 +29,8 @@ typedef struct {
   FILE *f;
   Scopes *scopes;
   Jcon_State state;
-  size_t size;
-  size_t arr_size;
+  bool has_values;
+  bool has_arr_values;
   size_t indent;
 } Jcon_Serializer;
 
@@ -47,5 +47,7 @@ void jcon_double(Jcon_Serializer *s, double val, int precision);
 void jcon_cstr(Jcon_Serializer *s, const char *cstr);
 void jcon_arr_begin(Jcon_Serializer *s);
 void jcon_arr_end(Jcon_Serializer *s);
+void jcon_obj_begin(Jcon_Serializer *s);
+void jcon_obj_end(Jcon_Serializer *s);
 
 #endif
